@@ -84,9 +84,13 @@ public class TrimUtils {
      * 处理字符串类型的数据
      *
      * @param object
+     *         对象
      * @param field
+     *        属性
      * @return
+     *        结果
      * @throws IllegalAccessException
+     *         异常
      */
     public static Object trimStringFiled(Object object, Field field) throws IllegalAccessException {
         Class<?> filedType = field.getType();
@@ -104,9 +108,13 @@ public class TrimUtils {
      * 处理实体对象类型的数据
      *
      * @param object
+     *        对象
      * @param field1
+     *        字段
      * @return
+     *        结果
      * @throws IllegalAccessException
+     *         异常
      */
     public static Object trimObjectFiled(Object object, Field field1) throws IllegalAccessException {
         Object filedValue1 = field1.get(object);
@@ -166,9 +174,12 @@ public class TrimUtils {
      * 处理Collection类型的数据
      *
      * @param object
+     *        对象
      * @param field
+     *        字段
      * @return
      * @throws IllegalAccessException
+     *         异常
      */
     public static Object trimList(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
@@ -199,9 +210,13 @@ public class TrimUtils {
      * 处理MAP类型的数据
      *
      * @param object
+     *         对象
      * @param field
+     *        字段
      * @return
+     *        结果
      * @throws IllegalAccessException
+     *        异常
      */
     public static Object trimMap(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
@@ -229,9 +244,12 @@ public class TrimUtils {
      * 处理数组类型的数据
      *
      * @param object
+     *        对象
      * @param field
+     *        字段
      * @return
      * @throws IllegalAccessException
+     *         异常
      */
     public static Object trimArray(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
