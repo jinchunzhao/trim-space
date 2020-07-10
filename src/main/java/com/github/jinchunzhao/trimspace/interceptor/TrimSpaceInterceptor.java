@@ -74,7 +74,6 @@ public class TrimSpaceInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, ModelAndView arg3) throws Exception {
 
     }
-
     /**
      * 预处理回调方法：在请求处理之前进行调用
      */
