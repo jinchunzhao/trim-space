@@ -16,7 +16,7 @@ import java.util.Objects;
  *
  * @author JinChunZhao
  * @version 1.0
- * @date 2020-07-02 22:57
+ * date 2020-07-02 22:57
  */
 
 public class TrimUtils {
@@ -178,6 +178,7 @@ public class TrimUtils {
      * @param field
      *        字段
      * @return
+     *        结果
      * @throws IllegalAccessException
      *         异常
      */
@@ -248,6 +249,7 @@ public class TrimUtils {
      * @param field
      *        字段
      * @return
+     *        结果
      * @throws IllegalAccessException
      *         异常
      */

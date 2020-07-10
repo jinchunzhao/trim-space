@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  *
  * @author JinChunZhao
  * @version 1.0
- * @date 2020-06-23 19:30
+ * date 2020-06-23 19:30
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
