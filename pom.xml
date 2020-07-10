@@ -55,6 +55,17 @@
     <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
   </properties>
+  <!-->发布的地址<-->
+  <distributionManagement>
+    <repository>
+      <id>snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -108,75 +119,75 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>release</id>
-      <activation>
-        <jdk>[1.8,)</jdk>
-      </activation>
-      <properties>
-        <additionalparam>-Xdoclint:none</additionalparam>
-      </properties>
-      <distributionManagement>
-        <snapshotRepository>
-          <!--id 要与setting.xml server id一致-->
-          <id>snapshot</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-          <!--id 要与setting.xml server id一致-->
-          <id>release</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-      </distributionManagement>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>release</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>snapshot</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven-gpg-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>release</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <extensions>true</extensions>
-            <configuration>
-              <serverId>release</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+  <!--<profiles>-->
+    <!--<profile>-->
+      <!--<id>release</id>-->
+      <!--<activation>-->
+        <!--<jdk>[1.8,)</jdk>-->
+      <!--</activation>-->
+      <!--<properties>-->
+        <!--<additionalparam>-Xdoclint:none</additionalparam>-->
+      <!--</properties>-->
+      <!--<distributionManagement>-->
+        <!--<snapshotRepository>-->
+          <!--&lt;!&ndash;id 要与setting.xml server id一致&ndash;&gt;-->
+          <!--<id>snapshot</id>-->
+          <!--<url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+        <!--</snapshotRepository>-->
+        <!--<repository>-->
+          <!--&lt;!&ndash;id 要与setting.xml server id一致&ndash;&gt;-->
+          <!--<id>release</id>-->
+          <!--<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>-->
+        <!--</repository>-->
+      <!--</distributionManagement>-->
+      <!--<build>-->
+        <!--<plugins>-->
+          <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-source-plugin</artifactId>-->
+            <!--<executions>-->
+              <!--<execution>-->
+                <!--<id>release</id>-->
+                <!--<phase>package</phase>-->
+                <!--<goals>-->
+                  <!--<goal>jar-no-fork</goal>-->
+                <!--</goals>-->
+              <!--</execution>-->
+              <!--<execution>-->
+                <!--<id>snapshot</id>-->
+                <!--<phase>package</phase>-->
+                <!--<goals>-->
+                  <!--<goal>jar-no-fork</goal>-->
+                <!--</goals>-->
+              <!--</execution>-->
+            <!--</executions>-->
+          <!--</plugin>-->
+          <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-gpg-plugin</artifactId>-->
+            <!--<version>${maven-gpg-plugin.version}</version>-->
+            <!--<executions>-->
+              <!--<execution>-->
+                <!--<id>release</id>-->
+                <!--<phase>verify</phase>-->
+                <!--<goals>-->
+                  <!--<goal>sign</goal>-->
+                <!--</goals>-->
+              <!--</execution>-->
+            <!--</executions>-->
+          <!--</plugin>-->
+          <!--<plugin>-->
+            <!--<groupId>org.sonatype.plugins</groupId>-->
+            <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
+            <!--<extensions>true</extensions>-->
+            <!--<configuration>-->
+              <!--<serverId>release</serverId>-->
+              <!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+              <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+            <!--</configuration>-->
+          <!--</plugin>-->
+        <!--</plugins>-->
+      <!--</build>-->
+    <!--</profile>-->
+  <!--</profiles>-->
 </project>
