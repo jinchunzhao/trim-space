@@ -9,8 +9,6 @@
   <version>0.0.2</version>
   <packaging>jar</packaging>
   <name>trim-space</name>
-  <!-- FIXME change it to the project's website -->
-  <!--<url>http://www.example.com</url>-->
 
   <description>TrimSpace is a blocker HandlerInterceptor using Spring, generalizing the string into the controller parameters do remove the Spaces before and after treatment</description>
   <url>https://github.com/jinchunzhao/trim-space</url>
