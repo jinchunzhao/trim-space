@@ -1,6 +1,7 @@
 package com.github.jinchunzhao.trimspace.interceptor;
 
-import com.github.jinchunzhao.trimspace.util.TrimUtils;
+import com.github.jinchunzhao.trimspace.factory.TrimFactory;
+import com.github.jinchunzhao.trimspace.factory.TrimSpaceFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -43,10 +44,11 @@ import java.util.Objects;
 
         // 获取连接点的入参
         Object[] objects = proceedingJoinPoint.getArgs();
+        TrimFactory trimFactory = new TrimSpaceFactory();
         if (Objects.nonNull(objects) && objects.length > 0) {
             // 处理接口传参：去除首尾空格
             for (int i = 0, len = objects.length; i < len; i++) {
-                objects[i] = TrimUtils.trimExe(objects[i]);
+                objects[i] = trimFactory.trimExe(objects[i]);
             }
         }
         // 放行
