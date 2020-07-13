@@ -1,12 +1,17 @@
 package com.github.jinchunzhao.trimspace.util;
 
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.catalina.connector.RequestFacade;
+import org.apache.catalina.connector.ResponseFacade;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,13 +29,24 @@ public class TrimUtils {
     /**
      * 非字符串类型的原始数据类型
      */
-    private static final List<Class<?>> WRAPPER = Arrays.asList(Byte.class, Short.class,
-            Integer.class, Long.class, Float.class, Double.class, Boolean.class);
+    private static final List<Class<?>> WRAPPER =
+        Arrays.asList(Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class, Boolean.class);
+
+    /**
+     * 请求参数--request response
+     */
+    private static final List<Class<?>> REQUEST_PARAM = Arrays.asList(RequestFacade.class, ResponseFacade.class);
 
     /**
      * 符串类型的原始数据类型
      */
     private static final List<Class<?>> STRING_PER = Arrays.asList(Character.class, String.class);
+
+    /**
+     * json 参数，map参数
+     */
+    private static final List<Class<?>> JSON_MAP_PARAM =
+        Arrays.asList(JSONObject.class, Map.class, LinkedHashMap.class, HashMap.class);
 
     /**
      * 处理所有类型参数:基本数据类型、实体对象、List、数组、set、map，去除字符串首尾空格
@@ -44,12 +60,18 @@ public class TrimUtils {
             return object;
         }
         Class<? extends Object> clazz = object.getClass();
+        if (REQUEST_PARAM.contains(clazz)) {
+            return object;
+        }
         // 为非String Char包装类型，不做处理
         if (WRAPPER.contains(clazz)) {
             return object;
         }
         if (STRING_PER.contains(clazz)) {
             return object.toString().trim();
+        }
+        if (JSON_MAP_PARAM.contains(clazz)) {
+            return trimJsonMap(object);
         }
         // 字段为private时
         Field[] fields = clazz.getDeclaredFields();
@@ -83,18 +105,14 @@ public class TrimUtils {
     /**
      * 处理字符串类型的数据
      *
-     * @param object
-     *         对象
-     * @param field
-     *        属性
-     * @return
-     *        结果
-     * @throws IllegalAccessException
-     *         异常
+     * @param object 对象
+     * @param field  属性
+     * @return 结果
+     * @throws IllegalAccessException 异常
      */
     public static Object trimStringFiled(Object object, Field field) throws IllegalAccessException {
         Class<?> filedType = field.getType();
-        if (filedType == String.class || filedType == Character.class) {
+        if (Objects.equals(filedType, String.class) || Objects.equals(filedType, Character.class)) {
             field.setAccessible(true);
             if (Objects.nonNull(field.get(object))) {
                 // 在原有的对象上设置去除首尾空格的新值
@@ -107,14 +125,10 @@ public class TrimUtils {
     /**
      * 处理实体对象类型的数据
      *
-     * @param object
-     *        对象
-     * @param field1
-     *        字段
-     * @return
-     *        结果
-     * @throws IllegalAccessException
-     *         异常
+     * @param object 对象
+     * @param field1 字段
+     * @return 结果
+     * @throws IllegalAccessException 异常
      */
     public static Object trimObjectFiled(Object object, Field field1) throws IllegalAccessException {
         Object filedValue1 = field1.get(object);
@@ -126,7 +140,7 @@ public class TrimUtils {
         if (WRAPPER.contains(filedType1)) {
             return object;
         }
-        if (filedType1 == String.class || filedType1 == Character.class) {
+        if (Objects.equals(filedType1, String.class) || Objects.equals(filedType1, Character.class)) {
             return filedValue1.toString().trim();
         }
         // 字段为private时，无法修改字段值，需要反射
@@ -158,7 +172,7 @@ public class TrimUtils {
             if (filedType != String.class) {
                 continue;
             }
-            if (filedType == String.class || filedType == Character.class) {
+            if (Objects.equals(filedType, String.class) || Objects.equals(filedType, Character.class)) {
                 // 去除private权限，变为可更改
                 field.setAccessible(true);
                 if (Objects.nonNull(field.get(filedValue1))) {
@@ -173,14 +187,10 @@ public class TrimUtils {
     /**
      * 处理Collection类型的数据
      *
-     * @param object
-     *        对象
-     * @param field
-     *        字段
-     * @return
-     *        结果
-     * @throws IllegalAccessException
-     *         异常
+     * @param object 对象
+     * @param field  字段
+     * @return 结果
+     * @throws IllegalAccessException 异常
      */
     public static Object trimList(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
@@ -194,7 +204,7 @@ public class TrimUtils {
         List<String> list = new ArrayList<>();
         for (int index = 0; index < objs.length; index++) {
             Object e1 = objs[index];
-            if (e1.getClass() == String.class) {
+            if (Objects.equals(e1.getClass(), String.class)) {
                 String trim = String.valueOf(e1).trim();
                 list.add(trim);
             } else {
@@ -210,14 +220,10 @@ public class TrimUtils {
     /**
      * 处理MAP类型的数据
      *
-     * @param object
-     *         对象
-     * @param field
-     *        字段
-     * @return
-     *        结果
-     * @throws IllegalAccessException
-     *        异常
+     * @param object 对象
+     * @param field  字段
+     * @return 结果
+     * @throws IllegalAccessException 异常
      */
     public static Object trimMap(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
@@ -228,7 +234,7 @@ public class TrimUtils {
         for (Map.Entry<Object, Object> entry : filedValueMap.entrySet()) {
             Object entryValue = entry.getValue();
             Class<?> aClass1 = entryValue.getClass();
-            if (aClass1 == String.class) {
+            if (Objects.equals(aClass1, String.class)) {
                 String trim = String.valueOf(entryValue).trim();
                 entry.setValue(trim);
             } else {
@@ -244,19 +250,15 @@ public class TrimUtils {
     /**
      * 处理数组类型的数据
      *
-     * @param object
-     *        对象
-     * @param field
-     *        字段
-     * @return
-     *        结果
-     * @throws IllegalAccessException
-     *         异常
+     * @param object 对象
+     * @param field  字段
+     * @return 结果
+     * @throws IllegalAccessException 异常
      */
     public static Object trimArray(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
         Object[] objs = (Object[]) filedValue;
-        if ( Objects.isNull(objs)) {
+        if (Objects.isNull(objs)) {
             return object;
         }
         if (objs.length == 0) {
@@ -265,7 +267,7 @@ public class TrimUtils {
         List<String> list = new ArrayList<>();
         for (int index = 0; index < objs.length; index++) {
             Object e1 = objs[index];
-            if (e1.getClass() == String.class) {
+            if (Objects.equals(e1.getClass(), String.class)) {
                 String trim = String.valueOf(e1).trim();
                 list.add(trim);
                 objs[index] = trim;
@@ -276,6 +278,40 @@ public class TrimUtils {
         if (Objects.nonNull(objs) && objs.length > 0) {
             field.set(object, objs);
         }
+        return object;
+    }
+
+    /**
+     * 处理JsonMAP类型的数据
+     *
+     * @param object 对象
+     * @return 结果
+     * @throws IllegalAccessException 异常
+     */
+    public static Object trimJsonMap(Object object) throws IllegalAccessException {
+        if (Objects.isNull(object)) {
+            return object;
+        }
+        //        if(object instanceof JSONObject){
+        //
+        //        }else if (object instanceof Map){
+        //
+        //        }
+        HashMap<Object, Object> hashMap = JSONObject.parseObject(JSON.toJSON(object).toString(), HashMap.class);
+        if (CollectionUtils.isEmpty(hashMap)) {
+            return object;
+        }
+        for (Map.Entry<Object, Object> entry : hashMap.entrySet()) {
+            Object entryValue = entry.getValue();
+            Class<?> valClass = entryValue.getClass();
+            if (Objects.equals(valClass, String.class)) {
+                String trim = String.valueOf(entryValue).trim();
+                entry.setValue(trim);
+            } else {
+                trimExe(entryValue);
+            }
+        }
+        object = JSONObject.toJSON(hashMap);
         return object;
     }
 }
