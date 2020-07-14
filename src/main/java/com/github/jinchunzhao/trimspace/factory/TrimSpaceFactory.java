@@ -192,16 +192,11 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
 
     @Override
     Object trimJsonMap(Object object) throws IllegalAccessException {
+        Class<? extends Object> clazz = object.getClass();
         if (Objects.isNull(object)){
             return object;
         }
-
-        //        if(object instanceof JSONObject){
-        //
-        //        }else if (object instanceof Map){
-        //
-        //        }
-        HashMap<Object,Object> hashMap = JSONObject.parseObject(JSON.toJSON(object).toString(), HashMap.class);
+        Map<Object,Object> hashMap = JSONObject.parseObject(JSON.toJSON(object).toString(), HashMap.class);
         if (CollectionUtils.isEmpty(hashMap)) {
             return object;
         }
@@ -211,11 +206,46 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
             if (Objects.equals(valClass,String.class)) {
                 String trim = String.valueOf(entryValue).trim();
                 entry.setValue(trim);
-            } else {
-                trimExe(entryValue);
+            } else if(WRAPPER.contains(valClass)){
+                continue;
+            }else{
+                entry.setValue(trimExe(entryValue));
             }
         }
-        object = JSONObject.toJSON(hashMap);
+        String json = JSONObject.toJSONString(hashMap);
+        object = JSON.parseObject(json, clazz);
+        return object;
+    }
+
+    @Override
+    Object trimParamListOrArray(Object object) throws IllegalAccessException {
+        Class<? extends Object> clazz = object.getClass();
+        Object[] objs = null;
+        if (clazz.isArray()){
+            objs = (Object[]) object;
+        }else{
+            objs = ((Collection) object).toArray();
+        }
+        if (Objects.isNull(objs)) {
+            return object;
+        }
+        if (objs.length == 0) {
+            return object;
+        }
+        List<Object> list = new ArrayList<>();
+        for (int index = 0; index < objs.length; index++) {
+            Object e1 = objs[index];
+            if (Objects.equals(e1.getClass() , String.class)) {
+                String trim = String.valueOf(e1).trim();
+                list.add(trim);
+            }else if(WRAPPER.contains(e1.getClass())){
+                continue;
+            } else {
+                list.add(trimExe(e1));
+            }
+        }
+        String json = JSONObject.toJSONString(list);
+        object = JSON.parseObject(json, clazz);
         return object;
     }
 
@@ -232,11 +262,21 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         if (WRAPPER.contains(clazz)) {
             return object;
         }
+        //字符串类型
         if (STRING_PER.contains(clazz)) {
             return object.toString().trim();
         }
+        //map json类型
         if(JSON_MAP_PARAM.contains(clazz)){
             return trimJsonMap(object);
+        }
+        //list set类型
+        if (object instanceof Collection){
+            return trimParamListOrArray(object);
+        }
+        //数组类型
+        if (clazz.isArray()){
+            return trimParamListOrArray(object);
         }
         // 字段为private时
         Field[] fields = clazz.getDeclaredFields();

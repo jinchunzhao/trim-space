@@ -93,4 +93,16 @@ public abstract class AbstractTrimFactory implements TrimFactory{
      */
     abstract Object trimJsonMap(Object object) throws IllegalAccessException ;
 
+    /**
+     * 处理param List Set Array类型的数据
+     *
+     * @param object
+     *         对象
+     * @return
+     *        结果
+     * @throws IllegalAccessException
+     *        异常
+     */
+    abstract Object trimParamListOrArray(Object object) throws IllegalAccessException ;
+
 }
