@@ -1,4 +1,3 @@
-
 package com.github.jinchunzhao.trimspace.annotation;
 
 

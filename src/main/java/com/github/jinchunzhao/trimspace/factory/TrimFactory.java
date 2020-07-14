@@ -1,8 +1,3 @@
-/*
- * Create on 2020-07-13 11:00
- *
- * Copyright(c) Chongqing Communications Construction CO.,Ltd, 2020. All rights reserved
- */
 package com.github.jinchunzhao.trimspace.factory;
 
 /**
