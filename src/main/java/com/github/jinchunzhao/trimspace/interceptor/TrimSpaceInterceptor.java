@@ -44,7 +44,7 @@ import java.util.Objects;
 
         // 获取连接点的入参
         Object[] objects = proceedingJoinPoint.getArgs();
-        TrimFactory trimFactory = new TrimSpaceFactory();
+        TrimFactory trimFactory = TrimSpaceFactory.getInstance();
         if (Objects.nonNull(objects) && objects.length > 0) {
             // 处理接口传参：去除首尾空格
             for (int i = 0, len = objects.length; i < len; i++) {

@@ -48,6 +48,29 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
     private static final List<Class<?>> JSON_MAP_PARAM =
         Arrays.asList(JSONObject.class, Map.class, LinkedHashMap.class, HashMap.class);
 
+    private static TrimSpaceFactory INSTANCE = null;
+
+    //私有化构造子,阻止外部直接实例化对象
+    private TrimSpaceFactory(){
+
+    }
+
+    /**
+     * 获取类的单例实例
+     * @return
+     *   返回类的唯一实例
+     */
+    public static TrimSpaceFactory getInstance(){
+        if(INSTANCE == null){
+            synchronized (TrimSpaceFactory.class) {
+                if(INSTANCE == null){
+                    INSTANCE = new TrimSpaceFactory();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
     @Override Object trimStringFiled(Object object, Field field) throws IllegalAccessException {
         Class<?> filedTypeClazz = field.getType();
         Object objFiled = field.get(object);
