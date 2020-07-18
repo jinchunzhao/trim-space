@@ -6,11 +6,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
@@ -20,7 +17,7 @@ import java.util.Objects;
  * @version 1.0
  * date 2020-06-23 19:50
  */
-@Component @Aspect public class TrimSpaceInterceptor implements HandlerInterceptor {
+@Component @Aspect public class TrimSpaceInterceptor extends HandlerInterceptorAdapter {
 
     /**
      * 环绕处理
@@ -54,30 +51,4 @@ import java.util.Objects;
         // 放行
         return proceedingJoinPoint.proceed(objects);
     }
-
-    /**
-     * 后置处理
-     */
-    @Override public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2,
-        Exception arg3) throws Exception {
-
-    }
-
-    /**
-     * 后处理回调方法
-     */
-    @Override public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, ModelAndView arg3)
-        throws Exception {
-
-    }
-
-    /**
-     * 预处理回调方法：在请求处理之前进行调用
-     */
-    @Override public boolean preHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2)
-        throws Exception {
-        //不需要前置处理
-        return false;
-    }
-
 }
