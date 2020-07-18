@@ -6,9 +6,9 @@
 
   <groupId>com.github.jinchunzhao</groupId>
   <artifactId>trim-space</artifactId>
-  <version>0.0.2</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>trim-space</name>
+  <name>${project.groupId}:${project.artifactId}</name>
 
   <description>TrimSpace is a blocker HandlerInterceptor using Spring, generalizing the string into the controller parameters do remove the Spaces before and after treatment</description>
   <url>https://github.com/jinchunzhao/trim-space</url>
@@ -20,16 +20,17 @@
   <!-- license 信息 -->
   <licenses>
     <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>actable</distribution>
+      <name>Apache 2.0 License</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
     </license>
   </licenses>
   <!-- SCM信息 -->
   <scm>
-    <url>https://github.com/jinchunzhao/trim-space</url>
-    <connection>scm:git@github.com:jinchunzhao/trim-space.git</connection>
-    <developerConnection>scm:git@github.com:jinchunzhao/trim-space</developerConnection>
+    <!--<url>https://github.com/jinchunzhao/trim-space</url>-->
+    <connection>scm:git:git://github.com/jinchunzhao/trim-space.git</connection>
+    <developerConnection>scm:git:ssh://github.com/jinchunzhao/trim-space.git</developerConnection>
+    <url>https://github.com/jinchunzhao/trim-space/tree/master</url>
   </scm>
 
   <!-- 开发者信息 -->
@@ -37,7 +38,7 @@
     <developer>
       <name>jinchunzhao</name>
       <email>459147801@qq.com</email>
-      <url>https://github.com/jinchunzhao/trim-space</url>
+      <url>https://github.com/jinchunzhao</url>
     </developer>
   </developers>
   <properties>
