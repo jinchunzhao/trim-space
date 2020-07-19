@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * @author JinChunZhao
  * @version 1.0
- * @date 2020-07-13 11:19
+ * date 2020-07-13 11:19
  */
 public class TrimSpaceFactory extends AbstractTrimFactory {
 

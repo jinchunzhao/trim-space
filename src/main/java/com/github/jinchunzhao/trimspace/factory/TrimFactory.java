@@ -5,7 +5,7 @@ package com.github.jinchunzhao.trimspace.factory;
  *
  * @author JinChunZhao
  * @version 1.0
- * @date 2020-07-12 10:00
+ * date 2020-07-12 10:00
  */
 public interface TrimFactory {
 

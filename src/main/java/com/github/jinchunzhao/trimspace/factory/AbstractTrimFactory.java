@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
  *
  * @author JinChunZhao
  * @version 1.0
- * @date 2020-07-12 10:30
+ * date 2020-07-12 10:30
  */
 public abstract class AbstractTrimFactory implements TrimFactory {
 
