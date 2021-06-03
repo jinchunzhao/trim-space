@@ -88,6 +88,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
                 List<Object> list = new ArrayList<>();
                 for (int i = 0, len = objects.size(); i < len; i++) {
                     Object item = objects.get(i);
+                    if (Objects.isNull(item)) {
+                        continue;
+                    }
                     list.add(setJsonArrayMap(object, item));
                 }
                 String json = JSONObject.toJSONString(list);
@@ -191,6 +194,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         List<Object> list = new ArrayList<>();
         for (int index = 0; index < objs.length; index++) {
             Object e1 = objs[index];
+            if (Objects.isNull(e1)) {
+                continue;
+            }
             if (Objects.equals(e1.getClass(), String.class)) {
                 String trim = String.valueOf(e1).trim();
                 list.add(trim);
@@ -215,6 +221,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         }
         for (int index = 0; index < objs.length; index++) {
             Object e1 = objs[index];
+            if (Objects.isNull(e1)) {
+                continue;
+            }
             if (Objects.equals(e1.getClass(), String.class)) {
                 String trim = String.valueOf(e1).trim();
                 objs[index] = trim;
@@ -236,6 +245,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         }
         for (Map.Entry<Object, Object> entry : filedValueMap.entrySet()) {
             Object entryValue = entry.getValue();
+            if (Objects.isNull(entryValue)) {
+                continue;
+            }
             Class<?> aClass1 = entryValue.getClass();
             if (Objects.equals(aClass1, String.class)) {
                 String trim = String.valueOf(entryValue).trim();
@@ -261,6 +273,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         }
         for (Map.Entry<Object, Object> entry : hashMap.entrySet()) {
             Object entryValue = entry.getValue();
+            if (Objects.isNull(entryValue)) {
+                continue;
+            }
             Class<?> valClass = entryValue.getClass();
             if (Objects.equals(valClass, String.class)) {
                 String trim = String.valueOf(entryValue).trim();
@@ -293,6 +308,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         List<Object> list = new ArrayList<>();
         for (int index = 0; index < objs.length; index++) {
             Object e1 = objs[index];
+            if (Objects.isNull(e1)) {
+                continue;
+            }
             if (Objects.equals(e1.getClass(), String.class)) {
                 String trim = String.valueOf(e1).trim();
                 list.add(trim);
@@ -324,6 +342,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
                 List<Object> list = new ArrayList<>();
                 for (int i = 0, len = objects.size(); i < len; i++) {
                     Object item = objects.get(i);
+                    if (Objects.isNull(item)) {
+                        continue;
+                    }
                     list.add(setJsonArrayMap(object, item));
                 }
                 String json = JSONObject.toJSONString(list);
@@ -437,6 +458,9 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         }
         for (Map.Entry<Object, Object> entry : hashMap.entrySet()) {
             Object entryValue = entry.getValue();
+            if (Objects.isNull(entryValue)) {
+                continue;
+            }
             Class<?> valClass = entryValue.getClass();
             if (Objects.equals(valClass, String.class)) {
                 String trim = String.valueOf(entryValue).trim();
