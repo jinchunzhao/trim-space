@@ -1,12 +1,5 @@
 package com.github.jinchunzhao.trimspace.factory;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.catalina.connector.RequestFacade;
-import org.apache.catalina.connector.ResponseFacade;
-import org.springframework.util.CollectionUtils;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,12 +10,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.catalina.connector.RequestFacade;
+import org.apache.catalina.connector.ResponseFacade;
+import org.springframework.util.CollectionUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 处理各种类型入参空格实现
  *
  * @author JinChunZhao
- * @version 1.0
- * date 2020-07-13 11:19
+ * @version 1.0 date 2020-07-13 11:19
  */
 public class TrimSpaceFactory extends AbstractTrimFactory {
 
@@ -50,20 +50,20 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
 
     private static TrimSpaceFactory INSTANCE = null;
 
-    //私有化构造子,阻止外部直接实例化对象
-    private TrimSpaceFactory(){
+    // 私有化构造子,阻止外部直接实例化对象
+    private TrimSpaceFactory() {
 
     }
 
     /**
      * 获取类的单例实例
-     * @return
-     *   返回类的唯一实例
+     * 
+     * @return 返回类的唯一实例
      */
-    public static TrimSpaceFactory getInstance(){
-        if(INSTANCE == null){
+    public static TrimSpaceFactory getInstance() {
+        if (INSTANCE == null) {
             synchronized (TrimSpaceFactory.class) {
-                if(INSTANCE == null){
+                if (INSTANCE == null) {
                     INSTANCE = new TrimSpaceFactory();
                 }
             }
@@ -71,7 +71,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         return INSTANCE;
     }
 
-    @Override Object trimStringFiled(Object object, Field field) throws IllegalAccessException {
+    @Override
+    Object trimStringFiled(Object object, Field field) throws IllegalAccessException {
         Class<?> filedTypeClazz = field.getType();
         Object objFiled = field.get(object);
         if (Objects.isNull(objFiled)) {
@@ -108,7 +109,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         return object;
     }
 
-    @Override Object trimObjectFiled(Object object, Field field1) throws IllegalAccessException {
+    @Override
+    Object trimObjectFiled(Object object, Field field1) throws IllegalAccessException {
         Object filedValue1 = field1.get(object);
         Class<?> filed1Clazz = field1.getType();
         if (Objects.isNull(field1)) {
@@ -141,7 +143,7 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
 
         Class<?> superclass = filed1Clazz.getSuperclass();
         List<Field> fieldsList = new ArrayList<>(Arrays.asList(fields));
-        //是否继承父类
+        // 是否继承父类
         if (Objects.nonNull(superclass)) {
             Field[] superFields = superclass.getDeclaredFields();
             fieldsList.addAll(Arrays.asList(superFields));
@@ -182,7 +184,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         return object;
     }
 
-    @Override Object trimListFiled(Object object, Field field) throws IllegalAccessException {
+    @Override
+    Object trimListFiled(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
         Object[] objs = ((Collection) filedValue).toArray();
         if (Objects.isNull(objs)) {
@@ -210,7 +213,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         return object;
     }
 
-    @Override Object trimArrayFiled(Object object, Field field) throws IllegalAccessException {
+    @Override
+    Object trimArrayFiled(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
         Object[] objs = (Object[]) filedValue;
         if (Objects.isNull(objs)) {
@@ -237,7 +241,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         return object;
     }
 
-    @Override Object trimMapFiled(Object object, Field field) throws IllegalAccessException {
+    @Override
+    Object trimMapFiled(Object object, Field field) throws IllegalAccessException {
         Object filedValue = field.get(object);
         Map<Object, Object> filedValueMap = (Map<Object, Object>) filedValue;
         if (CollectionUtils.isEmpty(filedValueMap)) {
@@ -262,7 +267,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         return object;
     }
 
-    @Override Object trimJsonMap(Object object) throws IllegalAccessException {
+    @Override
+    Object trimJsonMap(Object object) throws IllegalAccessException {
         Class<? extends Object> clazz = object.getClass();
         if (Objects.isNull(object)) {
             return object;
@@ -286,12 +292,13 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
                 entry.setValue(trimExe(entryValue));
             }
         }
-        String json = JSONObject.toJSONString(hashMap);
-        object = JSON.parseObject(json, clazz);
-        return object;
+        // String json = JSONObject.toJSONString(hashMap);
+        // object = JSON.parseObject(json, clazz);
+        return hashMap;
     }
 
-    @Override Object trimParamListOrArray(Object object) throws IllegalAccessException {
+    @Override
+    Object trimParamListOrArray(Object object) throws IllegalAccessException {
         Class<? extends Object> clazz = object.getClass();
         Object[] objs = null;
         if (clazz.isArray()) {
@@ -320,12 +327,11 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
                 list.add(trimExe(e1));
             }
         }
-        String json = JSONObject.toJSONString(list);
-        object = JSON.parseObject(json, clazz);
-        return object;
+        return list;
     }
 
-    @Override Object trimJsonString(Object object) throws IllegalAccessException {
+    @Override
+    Object trimJsonString(Object object) throws IllegalAccessException {
         Class<?> clazz = object.getClass();
         if (Objects.isNull(object)) {
             return object;
@@ -358,7 +364,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
         }
     }
 
-    @Override public Object trimExe(Object object) throws IllegalAccessException {
+    @Override
+    public Object trimExe(Object object) throws IllegalAccessException {
         if (Objects.isNull(object)) {
             return object;
         }
@@ -391,7 +398,7 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
 
         Class<?> superclass = clazz.getSuperclass();
         List<Field> fieldsList = new ArrayList<>(Arrays.asList(fields));
-        //是否有父类
+        // 是否有父类
         if (!Objects.isNull(superclass)) {
             Field[] superFields = superclass.getDeclaredFields();
             fieldsList.addAll(Arrays.asList(superFields));
@@ -422,7 +429,8 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
     /**
      * 判断字符串是否是json格式
      *
-     * @param string 字符串
+     * @param string
+     *            字符串
      * @return true: 是 false:否
      */
     private boolean isJson(String string) {
@@ -437,10 +445,13 @@ public class TrimSpaceFactory extends AbstractTrimFactory {
     /**
      * 设置json 类型 Array、Map
      *
-     * @param object object
-     * @param item   每一项
+     * @param object
+     *            object
+     * @param item
+     *            每一项
      * @return object
-     * @throws IllegalAccessException 异常
+     * @throws IllegalAccessException
+     *             异常
      */
     private Object setJsonArrayMap(Object object, Object item) throws IllegalAccessException {
         Class<?> aClass = null;
