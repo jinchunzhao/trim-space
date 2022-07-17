@@ -4,74 +4,53 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.jinchunzhao</groupId>
+  <groupId>com.github.jinchunzhao.trim</groupId>
   <artifactId>trim-space</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>${project.groupId}:${project.artifactId}</name>
 
+  <name>trim-space</name>
   <description>TrimSpace is a blocker HandlerInterceptor using Spring, generalizing the string into the controller parameters do remove the Spaces before and after treatment</description>
   <url>https://github.com/jinchunzhao/trim-space</url>
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
-  </parent>
-  <!-- license 信息 -->
-  <licenses>
-    <license>
-      <name>Apache 2.0 License</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <!-- SCM信息 -->
-  <scm>
-    <!--<url>https://github.com/jinchunzhao/trim-space</url>-->
-    <connection>scm:git:git://github.com/jinchunzhao/trim-space.git</connection>
-    <developerConnection>scm:git:ssh://github.com/jinchunzhao/trim-space.git</developerConnection>
-    <url>https://github.com/jinchunzhao/trim-space/tree/master</url>
-  </scm>
 
   <!-- 开发者信息 -->
   <developers>
     <developer>
+      <id>jinchunzhao</id>
       <name>jinchunzhao</name>
-      <email>459147801@qq.com</email>
-      <url>https://github.com/jinchunzhao</url>
+      <email>15136708953@163.com</email>
     </developer>
   </developers>
+
+  <!-- license 信息 -->
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <!-- SCM信息 -->
+  <scm>
+    <connection>https://github.com/jinchunzhao/trim-space.git</connection>
+    <url>https://github.com/jinchunzhao/trim-space</url>
+  </scm>
+
   <properties>
     <java.version>1.8</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
-
-
 
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
       <version>5.2.4.RELEASE</version>
-      <!--<scope>runtime</scope>-->
     </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
       <version>1.9.5</version>
-      <!--<scope>runtime</scope>-->
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>org.apache.tomcat.embed</groupId>-->
-    <!--      <artifactId>tomcat-embed-core</artifactId>-->
-    <!--      <version>9.0.31</version>-->
-    <!--      &lt;!&ndash;<scope>runtime</scope>&ndash;&gt;-->
-    <!--    </dependency>-->
-    <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
@@ -83,20 +62,19 @@
   <!-- 配置生成javadoc和sources包的插件 -->
   <profiles>
     <profile>
-      <id>ossrh</id>
+      <id>release</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <build>
         <plugins>
-          <!-- 要生成Javadoc和Source jar文件，您必须配置javadoc和源Maven插件 -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
             <version>2.2.1</version>
             <executions>
               <execution>
-                <id>attach-sources</id>
+                <phase>package</phase>
                 <goals>
                   <goal>jar-no-fork</goal>
                 </goals>
@@ -107,23 +85,29 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.9.1</version>
+            <configuration>
+              <show>private</show>
+              <nohelp>true</nohelp>
+              <charset>UTF-8</charset>
+              <encoding>UTF-8</encoding>
+              <docencoding>UTF-8</docencoding>
+              <additionalparam>-Xdoclint:none</additionalparam>
+            </configuration>
             <executions>
               <execution>
-                <id>attach-javadocs</id>
+                <phase>package</phase>
                 <goals>
                   <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
           </plugin>
-          <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
             <executions>
               <execution>
-                <id>sign-artifacts</id>
                 <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
@@ -131,20 +115,78 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.7.0</version>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+            </configuration>
+          </plugin>
+          <!--Release -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.5.1</version>
+          </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.8.2</version>
+            <executions>
+              <execution>
+                <id>default-deploy</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.7</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.8.1</version>
+          </plugin>
         </plugins>
       </build>
-      <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
+      <!-- 这里配置的ossrh要与settings.xml的一致，不然发布会出错 -->
       <distributionManagement>
         <snapshotRepository>
           <id>ossrh</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+          <name>Sonatype Nexus Snapshots</name>
+          <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
           <id>ossrh</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+          <name>Nexus Release Repository</name>
+          <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
       </distributionManagement>
     </profile>
   </profiles>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
