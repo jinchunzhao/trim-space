@@ -1,4 +1,4 @@
-package com.github.jinchunzhao.trimspace.factory;
+package io.github.jinchunzhao.trimspace.factory;
 
 /**
  * 去除空格API入口

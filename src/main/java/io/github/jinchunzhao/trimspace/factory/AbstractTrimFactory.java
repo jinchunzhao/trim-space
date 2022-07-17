@@ -1,4 +1,4 @@
-package com.github.jinchunzhao.trimspace.factory;
+package io.github.jinchunzhao.trimspace.factory;
 
 import java.lang.reflect.Field;
 

@@ -1,4 +1,4 @@
-package com.github.jinchunzhao.trimspace.annotation;
+package io.github.jinchunzhao.trimspace.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

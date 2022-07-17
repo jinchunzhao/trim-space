@@ -1,14 +1,14 @@
-package com.github.jinchunzhao.trimspace.interceptor;
+package io.github.jinchunzhao.trimspace.interceptor;
 
 import java.util.Objects;
 
+import io.github.jinchunzhao.trimspace.factory.TrimSpaceFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-import com.github.jinchunzhao.trimspace.factory.TrimFactory;
-import com.github.jinchunzhao.trimspace.factory.TrimSpaceFactory;
+import io.github.jinchunzhao.trimspace.factory.TrimFactory;
 
 /**
  * 自定义拦截器--实现去除首尾空格处理
@@ -29,7 +29,7 @@ public class TrimSpaceInterceptor {
      * @throws Throwable
      *             异常
      */
-    @Around(value = "@annotation(com.github.jinchunzhao.trimspace.annotation.TrimSpace)")
+    @Around(value = "@annotation(io.github.jinchunzhao.trimspace.annotation.TrimSpace)")
     public Object trimAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         // RequestAttributes ra = RequestContextHolder.getRequestAttributes();
